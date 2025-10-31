@@ -150,7 +150,7 @@ def plot_load_and_completions(results: pd.DataFrame):
     # overlay total completions per day
     completions = df_metrics.groupby("day")["completed"].sum().reset_index()
     fig.add_trace(go.Scatter(x=completions["day"], y=completions["completed"], mode="lines+markers",
-                             name="Repairs Completed (total)", line=dict(color="white", width=2), yaxis="y"))
+                             name="Repairs Completed (total)", line=dict(color="white", width=4), yaxis="y"))
 
     return fig
 
