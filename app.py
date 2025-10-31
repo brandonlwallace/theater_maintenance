@@ -3,7 +3,7 @@ from core.data_generator import generate_theater_data
 from core.allocator import allocate_repairs
 from core.simulator import run_simulation
 from core.metrics import summarize_results
-from core.visualizer import plot_results
+from core.visualizer import plot_results, plot_map, plot_downtime, plot_load_and_completions
 
 st.set_page_config(page_title="Theater Maintenance & Supply Queue Simulator", layout="wide")
 
@@ -27,7 +27,19 @@ if st.sidebar.button("Run Simulation"):
     st.write("### Key Results")
     st.dataframe(summary)
 
-    fig = plot_results(results)
-    st.plotly_chart(fig, use_container_width=True)
+    # Show a map of units, shops, and assignments, plus the repairs-over-time chart.
+    # Map: full-width row for better readability
+    fig_map = plot_map(theater_data, allocation)
+    st.plotly_chart(fig_map, use_container_width=True)
+
+    # Two graphs below the map: downtime and shop load/completions
+    downtime_fig = plot_downtime(results)
+    load_fig = plot_load_and_completions(results)
+
+    c1, c2 = st.columns(2)
+    with c1:
+        st.plotly_chart(downtime_fig, use_container_width=True)
+    with c2:
+        st.plotly_chart(load_fig, use_container_width=True)
 else:
     st.info("Adjust parameters in the sidebar and click **Run Simulation** to begin.")
